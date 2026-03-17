@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Router
       root={props => (
-        <div class={'h-screen'}>
+        <div class={'min-h-screen'}>
           <TanStackDevtools plugins={[hotkeysDevtoolsPlugin()]} />
           <div class="flex h-full">
             <Sidebar />

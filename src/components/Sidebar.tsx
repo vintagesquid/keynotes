@@ -9,7 +9,7 @@ const PlaceholderIcon = () => (
 
 const Sidebar: Component = () => {
   return (
-    <aside class="min-h-full bg-base-200 flex flex-col justify-between py-4">
+    <aside class="min-h-screen w-16 items-center bg-base-200 flex flex-col justify-between py-4">
       <ul class="menu gap-2">
         <SidebarItem href="/" icon={PlaceholderIcon} label="Stage" />
         <SidebarItem href="#" icon={PlaceholderIcon} label="Reviser" />
@@ -24,4 +24,4 @@ const Sidebar: Component = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebar   

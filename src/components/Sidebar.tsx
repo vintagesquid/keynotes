@@ -2,7 +2,16 @@ import { Component } from "solid-js";
 import SidebarItem from "./SidebarItem";
 
 const PlaceholderIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="size-5">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    stroke-width="2"
+    fill="none"
+    stroke="currentColor"
+    class="size-5"
+  >
     <rect x="3" y="3" width="18" height="18" rx="2" />
   </svg>
 );
@@ -24,4 +33,4 @@ const Sidebar: Component = () => {
   );
 };
 
-export default Sidebar   
+export default Sidebar;

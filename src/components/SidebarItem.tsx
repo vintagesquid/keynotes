@@ -5,7 +5,7 @@ type SidebarItemProps = {
   icon: Component;
   label: string;
   href: string;
-}
+};
 
 const SidebarItem: Component<SidebarItemProps> = (props) => {
   return (
@@ -18,4 +18,4 @@ const SidebarItem: Component<SidebarItemProps> = (props) => {
   );
 };
 
-export default SidebarItem
+export default SidebarItem;

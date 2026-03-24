@@ -8,7 +8,10 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check"
+    "fmt:check": "oxfmt --check",
+    "db:start": "docker compose -f db/docker-compose.yml up -d postgres",
+    "db:stop": "docker compose -f db/docker-compose.yml stop postgres",
+    "db:remove": "docker compose -f db/docker-compose.yml down -v postgres"
   },
   "dependencies": {
     "@solidjs/router": "^0.15.0",

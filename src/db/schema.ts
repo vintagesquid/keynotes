@@ -1,7 +1,11 @@
+import { sql } from "drizzle-orm";
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-export const tasksTable = pgTable("tasks", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+export const tasks = pgTable("tasks", {
+  id: text()
+    .notNull()
+    .primaryKey()
+    .default(sql`uuidv7()`),
   title: text().notNull(),
   completedAt: timestamp(),
   scheduledAt: timestamp(),

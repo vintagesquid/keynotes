@@ -49,10 +49,6 @@ export default function Home() {
       </button>
       <p class="my-4">
         <span>Home</span>
-        {" - "}
-        <A href="/about" class="text-sky-600 hover:underline">
-          About Page
-        </A>{" "}
       </p>
     </div>
   );

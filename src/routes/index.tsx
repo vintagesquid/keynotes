@@ -1,7 +1,7 @@
 import { useQuery, useZero } from "@rocicorp/zero/solid";
-import { A } from "@solidjs/router";
-import { For } from "solid-js";
+
 import Counter from "~/components/Counter";
+import { TasksList } from "~/components/TaskList";
 import { mutators } from "~/zero/mutators";
 import { queries } from "~/zero/queries";
 import { v7 as uuid } from "uuid";
@@ -9,7 +9,7 @@ import { v7 as uuid } from "uuid";
 export default function Home() {
   const zero = useZero();
   console.log(zero().clientID);
-  const [tasks] = useQuery(() => queries.tasks.getAllTasks());
+  const [tasks] = useQuery(() => queries.tasks.all());
 
   const onAddTaskClick = async () => {
     const result = zero().mutate(
@@ -29,27 +29,20 @@ export default function Home() {
   };
 
   return (
-    <div class="text-center mx-auto text-gray-700 p-4">
+    <div class="text-center mx-auto p-4 space-y-4">
       <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">KeyNotes</h1>
 
       <Counter />
 
-      <h1 class="text-xl">Tasks</h1>
-
-      <For each={tasks()}>
-        {(task) => (
-          <div>
-            {task.id} - {task.title}
-          </div>
-        )}
-      </For>
+      <h1 class="text-3xl">Tasks</h1>
 
       <button class="btn btn-primary" onClick={onAddTaskClick}>
         Add random task
       </button>
-      <p class="my-4">
-        <span>Home</span>
-      </p>
+
+      <div class="max-w-md mx-auto">
+        <TasksList tasks={tasks()} />
+      </div>
     </div>
   );
 }

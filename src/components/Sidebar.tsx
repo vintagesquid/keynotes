@@ -21,7 +21,7 @@ const Sidebar: Component = () => {
     <aside class="min-h-screen w-16 items-center bg-base-200 flex flex-col justify-between py-4">
       <ul class="menu gap-2">
         <SidebarItem href="/" icon={PlaceholderIcon} label="Stage" />
-        <SidebarItem href="/reviser" icon={PlaceholderIcon} label="Reviser" />
+        <SidebarItem href="/revise" icon={PlaceholderIcon} label="Revise" />
         <SidebarItem href="/stats" icon={PlaceholderIcon} label="Stats" />
         <SidebarItem href="/goals" icon={PlaceholderIcon} label="Goals" />
       </ul>

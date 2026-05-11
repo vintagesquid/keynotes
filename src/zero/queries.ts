@@ -6,5 +6,8 @@ export const queries = defineQueries({
     all: defineQuery(() => {
       return zql.tasks;
     }),
+    scheduledBetween: defineQuery(({ args }: { args: { start: number; end: number } }) => {
+      return zql.tasks.where("scheduledAt", ">=", args.start).where("scheduledAt", "<=", args.end);
+    }),
   },
 });

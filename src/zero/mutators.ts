@@ -7,11 +7,13 @@ export const mutators = defineMutators({
       z.object({
         id: z.string(),
         title: z.string(),
+        scheduledAt: z.number().optional(),
       }),
       async ({ args, tx }) => {
         await tx.mutate.tasks.insert({
           id: args.id,
           title: args.title,
+          scheduledAt: args.scheduledAt ?? null,
         });
       },
     ),

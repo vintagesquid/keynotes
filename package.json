@@ -25,6 +25,7 @@
     "@tanstack/solid-hotkeys": "^0.4.1",
     "@tanstack/solid-hotkeys-devtools": "^0.4.1",
     "@types/pg": "^8.20.0",
+    "cally": "^0.9.2",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "drizzle-seed": "^0.3.1",

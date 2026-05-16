@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  prefix: "d-"
+};
 
 body {
   background: var(--color-base-100);

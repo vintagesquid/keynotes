@@ -11,7 +11,7 @@ const KeyboardHintButton: Component<KeyboardHintButtonProps> = (props) => {
 
   return (
     <button
-      class="btn btn-sm btn-ghost btn-square group/keyboard-hint"
+      class="d-btn d-btn-sm d-btn-ghost d-btn-square group/keyboard-hint"
       onClick={local.onClick}
       {...buttonProps}
     >

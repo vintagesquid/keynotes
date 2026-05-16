@@ -19,13 +19,13 @@ const PlaceholderIcon = () => (
 const Sidebar: Component = () => {
   return (
     <aside class="min-h-screen w-16 items-center bg-base-200 flex flex-col justify-between py-4">
-      <ul class="menu gap-2">
+      <ul class="d-menu gap-2">
         <SidebarItem href="/" icon={PlaceholderIcon} label="Stage" />
         <SidebarItem href="/revise" icon={PlaceholderIcon} label="Revise" />
         <SidebarItem href="/stats" icon={PlaceholderIcon} label="Stats" />
         <SidebarItem href="/goals" icon={PlaceholderIcon} label="Goals" />
       </ul>
-      <ul class="menu gap-2">
+      <ul class="d-menu gap-2">
         <SidebarItem href="/settings" icon={PlaceholderIcon} label="Settings" />
         <SidebarItem href="/profile" icon={PlaceholderIcon} label="Profile" />
       </ul>

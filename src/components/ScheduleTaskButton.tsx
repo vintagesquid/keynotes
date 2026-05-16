@@ -36,7 +36,7 @@ export const ScheduleTaskButton: Component<ScheduleTaskButtonProps> = (props) =>
       <div
         popover
         id={popoverId}
-        class="dropdown bg-base-100 rounded-box shadow-lg"
+        class="d-dropdown bg-base-100 rounded-box shadow-lg"
         style={`position-anchor:--cally-${props.task.id}`}
       >
         <calendar-date class="cally" onChange={onDateChange}>

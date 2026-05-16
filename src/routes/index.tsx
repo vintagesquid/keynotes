@@ -42,7 +42,7 @@ export default function Home() {
 
       <h1 class="text-3xl">Tasks</h1>
 
-      <button class="btn btn-primary" onClick={onAddTaskClick}>
+      <button class="d-btn d-btn-primary" onClick={onAddTaskClick}>
         Add random task to this day
       </button>
 

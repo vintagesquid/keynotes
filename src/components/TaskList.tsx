@@ -55,7 +55,7 @@ export const TasksList: Component<TasksListProps> = (props) => {
             <div class="space-y-1">
               <For each={tasks}>
                 {(task) => (
-                  <div class="flex gap-2 justify-between items-center group">
+                  <div class="flex gap-2 justify-between items-center group py-1 text-lg">
                     <div
                       classList={{
                         "line-through group-hover:no-underline": Boolean(task.completedAt),
@@ -64,11 +64,11 @@ export const TasksList: Component<TasksListProps> = (props) => {
                       {task.title}
                     </div>
                     <div class="invisible group-hover:visible">
-                      <div class="flex gap-2">
+                      <div class="flex gap-2 items-center">
                         <div>
                           <input
                             type="checkbox"
-                            class="checkbox"
+                            class="d-checkbox"
                             checked={Boolean(task.completedAt)}
                             onChange={(e) => handleToggle(task.id, e.currentTarget.checked)}
                           />

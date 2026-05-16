@@ -1,7 +1,7 @@
 import { Component, JSX, splitProps } from "solid-js";
 
 type KeyboardHintButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
-  icon?: unknown;
+  icon: Component<{ class?: string }>;
   keyboardHintKey: string;
   onClick: () => void;
 };
@@ -16,7 +16,9 @@ const KeyboardHintButton: Component<KeyboardHintButtonProps> = (props) => {
       {...buttonProps}
     >
       <span class="group-hover/keyboard-hint:hidden kbd">{local.keyboardHintKey}</span>
-      <span class="hidden group-hover/keyboard-hint:block">{"i"}</span>
+      <span class="hidden group-hover/keyboard-hint:block">
+        <local.icon class="size-4" />
+      </span>
     </button>
   );
 };

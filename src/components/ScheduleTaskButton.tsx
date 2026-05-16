@@ -1,5 +1,6 @@
 import { useZero } from "@rocicorp/zero/solid";
 import { Component } from "solid-js";
+import { CalendarSearch } from "lucide-solid";
 import { mutators } from "~/zero/mutators";
 import { Task } from "~/zero/schema";
 import KeyboardHintButton from "./KeyboardHintButton";
@@ -27,6 +28,7 @@ export const ScheduleTaskButton: Component<ScheduleTaskButtonProps> = (props) =>
   return (
     <div>
       <KeyboardHintButton
+        icon={CalendarSearch}
         keyboardHintKey="s"
         onClick={() => null}
         popovertarget={popoverId}
@@ -39,7 +41,7 @@ export const ScheduleTaskButton: Component<ScheduleTaskButtonProps> = (props) =>
         class="d-dropdown bg-base-100 rounded-box shadow-lg"
         style={`position-anchor:--cally-${props.task.id}`}
       >
-        <calendar-date class="cally" onChange={onDateChange}>
+        <calendar-date class="d-cally" onChange={onDateChange}>
           <svg
             aria-label="Previous"
             class="fill-current size-4"

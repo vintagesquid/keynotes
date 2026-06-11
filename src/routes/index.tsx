@@ -1,5 +1,6 @@
 import { useQuery, useZero } from "@rocicorp/zero/solid";
 import { TasksList } from "~/components/TaskList";
+import { CreateTaskModal } from "~/components/CreateTaskModal";
 import { mutators } from "~/zero/mutators";
 import { queries } from "~/zero/queries";
 import { v7 as uuid } from "uuid";
@@ -42,9 +43,12 @@ export default function Home() {
 
       <h1 class="text-3xl">Tasks</h1>
 
-      <button class="d-btn d-btn-primary" onClick={onAddTaskClick}>
-        Add random task to this day
-      </button>
+      <div class="flex justify-center gap-2">
+        <button class="d-btn d-btn-primary" onClick={onAddTaskClick}>
+          Add random task to this day
+        </button>
+        <CreateTaskModal />
+      </div>
 
       <div class="max-w-md mx-auto">
         <TasksList tasks={tasks()} />

@@ -6,8 +6,10 @@ import { Task } from "~/zero/schema";
 import KeyboardHintButton from "./KeyboardHintButton";
 import "cally";
 import { CalendarDateProps } from "cally";
+
 type ScheduleTaskButtonProps = {
   task: Task;
+  onToggle?: (isOpen: boolean) => void;
 };
 
 export const ScheduleTaskButton: Component<ScheduleTaskButtonProps> = (props) => {
@@ -40,6 +42,7 @@ export const ScheduleTaskButton: Component<ScheduleTaskButtonProps> = (props) =>
         id={popoverId}
         class="d-dropdown bg-base-100 rounded-box shadow-lg"
         style={`position-anchor:--cally-${props.task.id}`}
+        onToggle={(e) => props.onToggle?.(e.newState === "open")}
       >
         <calendar-date class="d-cally" onChange={onDateChange}>
           <svg

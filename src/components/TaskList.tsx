@@ -1,4 +1,4 @@
-import { Component, For, createMemo } from "solid-js";
+import { Component, For, createMemo, createSignal } from "solid-js";
 import { useZero } from "@rocicorp/zero/solid";
 import { mutators } from "~/zero/mutators";
 import type { Task } from "~/zero/schema";
@@ -11,6 +11,7 @@ type TasksListProps = {
 
 export const TasksList: Component<TasksListProps> = (props) => {
   const zero = useZero();
+  const [openPopoverId, setOpenPopoverId] = createSignal<string | null>(null);
 
   const handleToggle = (id: string, completed: boolean) => {
     zero().mutate(
@@ -63,7 +64,12 @@ export const TasksList: Component<TasksListProps> = (props) => {
                     >
                       {task.title}
                     </div>
-                    <div class="invisible group-hover:visible">
+                    <div
+                      classList={{
+                        "invisible": openPopoverId() !== task.id,
+                        "group-hover:visible": true,
+                      }}
+                    >
                       <div class="flex gap-2 items-center">
                         <div>
                           <input
@@ -74,7 +80,10 @@ export const TasksList: Component<TasksListProps> = (props) => {
                           />
                         </div>
                         <div>
-                          <ScheduleTaskButton task={task} />
+                          <ScheduleTaskButton
+                            task={task}
+                            onToggle={(isOpen) => setOpenPopoverId(isOpen ? task.id : null)}
+                          />
                         </div>
                         <div>
                           <DeleteTaskButton task={task} />

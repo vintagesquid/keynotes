@@ -122,33 +122,22 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
     setMaxBound(addDays(maxBound(), 1));
   };
 
-  const onThumbDown = (type: "start" | "end") => (e: PointerEvent) => {
+  const startDrag = (type: "start" | "end" | "range") => (e: PointerEvent) => {
     e.preventDefault();
-    if (!(e.target instanceof HTMLElement)) {
-      return;
-    }
-    e.target.setPointerCapture(e.pointerId);
     setDragState({
       type,
       startPointerX: e.clientX,
       startLeft: start(),
       startRight: end(),
     });
+    document.addEventListener("pointermove", handlePointerMove, { passive: true });
+    document.addEventListener("pointerup", handlePointerUp, { passive: true });
+    document.addEventListener("pointercancel", handlePointerUp, { passive: true });
   };
 
-  const onRangeDown = (e: PointerEvent) => {
-    e.preventDefault();
-    if (!(e.target instanceof HTMLElement)) {
-      return;
-    }
-    e.target.setPointerCapture(e.pointerId);
-    setDragState({
-      type: "range",
-      startPointerX: e.clientX,
-      startLeft: start(),
-      startRight: end(),
-    });
-  };
+  const onThumbDown = startDrag("start");
+  const onThumbEndDown = startDrag("end");
+  const onRangeDown = startDrag("range");
 
   const handlePointerMove = (e: PointerEvent) => {
     const state = dragState();
@@ -169,15 +158,24 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
 
     if (state.type === "start") {
       newStart = new Date(state.startLeft.getTime() + deltaMs);
-      newEnd = end();
-      if (newStart.getTime() > newEnd.getTime()) {
-        newStart = new Date(newEnd.getTime() - MIN_RANGE_MS);
-      }
-      if (newStart.getTime() < minBound().getTime()) {
-        newStart = minBound();
-      }
       if (isSingleDay()) {
         newEnd = new Date(newStart.getTime() + MIN_RANGE_MS);
+        if (newStart.getTime() < minBound().getTime()) {
+          newStart = minBound();
+          newEnd = new Date(newStart.getTime() + MIN_RANGE_MS);
+        }
+        if (newEnd.getTime() > maxBound().getTime()) {
+          newEnd = maxBound();
+          newStart = new Date(newEnd.getTime() - MIN_RANGE_MS);
+        }
+      } else {
+        newEnd = end();
+        if (newStart.getTime() > newEnd.getTime()) {
+          newStart = new Date(newEnd.getTime() - MIN_RANGE_MS);
+        }
+        if (newStart.getTime() < minBound().getTime()) {
+          newStart = minBound();
+        }
       }
     } else if (state.type === "end") {
       newStart = start();
@@ -216,17 +214,20 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
     setEnd(newEnd);
   };
 
-  const handlePointerUp = (e: PointerEvent) => {
+  const endDrag = () => {
     const state = dragState();
     if (!state) {
       return;
     }
-    if (!(e.target instanceof HTMLElement)) {
-      return;
-    }
-    e.target.releasePointerCapture(e.pointerId);
     setDragState(null);
+    document.removeEventListener("pointermove", handlePointerMove);
+    document.removeEventListener("pointerup", handlePointerUp);
+    document.removeEventListener("pointercancel", handlePointerUp);
     props.onRangeChange(start(), end());
+  };
+
+  const handlePointerUp = () => {
+    endDrag();
   };
 
   const onBoundDateChange = (bound: "min" | "max") => (e: Event) => {
@@ -252,6 +253,9 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
 
   onCleanup(() => {
     setDragState(null);
+    document.removeEventListener("pointermove", handlePointerMove);
+    document.removeEventListener("pointerup", handlePointerUp);
+    document.removeEventListener("pointercancel", handlePointerUp);
   });
 
   return (
@@ -331,9 +335,6 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
           <div
             ref={trackRef}
             class="relative h-1.5 w-full rounded-full bg-base-200"
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerLeave={handlePointerUp}
           >
             {/* selected fill (range mode only) — draggable to move the window */}
             <Show when={!isSingleDay()}>
@@ -380,10 +381,10 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
                   aria-valuemin={minBound().getTime()}
                   aria-valuemax={maxBound().getTime()}
                   aria-valuenow={start().getTime()}
-                  onPointerDown={onThumbDown("start")}
+                  onPointerDown={onThumbDown}
                   onDblClick={() => commitRange(minBound(), end())}
                   classList={{
-                    "absolute top-1/2 z-20 size-4 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-[5px] border-2 border-primary bg-base-100 shadow-sm transition-transform hover:scale-110 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring": true,
+                    "absolute top-1/2 z-20 size-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-[5px] border-2 border-primary bg-base-100 shadow-sm transition-transform hover:scale-110 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring": true,
                     "scale-110": dragState()?.type === "start",
                   }}
                   style={{ left: `${startPct()}%` }}
@@ -398,10 +399,10 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
                   aria-valuemin={minBound().getTime()}
                   aria-valuemax={maxBound().getTime()}
                   aria-valuenow={end().getTime()}
-                  onPointerDown={onThumbDown("end")}
+                  onPointerDown={onThumbEndDown}
                   onDblClick={() => commitRange(start(), maxBound())}
                   classList={{
-                    "absolute top-1/2 z-20 size-4 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-[5px] border-2 border-primary bg-base-100 shadow-sm transition-transform hover:scale-110 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring": true,
+                    "absolute top-1/2 z-20 size-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-[5px] border-2 border-primary bg-base-100 shadow-sm transition-transform hover:scale-110 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring": true,
                     "scale-110": dragState()?.type === "end",
                   }}
                   style={{ left: `${endPct()}%` }}
@@ -418,10 +419,10 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
                   aria-valuemin={minBound().getTime()}
                   aria-valuemax={maxBound().getTime()}
                   aria-valuenow={start().getTime()}
-                  onPointerDown={onThumbDown("start")}
+                  onPointerDown={onThumbDown}
                   onDblClick={() => commitRange(minBound(), end())}
                   classList={{
-                    "absolute top-1/2 z-20 size-4 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-[5px] border-2 border-primary bg-base-100 shadow-sm transition-transform hover:scale-110 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring": true,
+                    "absolute top-1/2 z-20 size-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-[5px] border-2 border-primary bg-base-100 shadow-sm transition-transform hover:scale-110 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring": true,
                     "scale-110": dragState()?.type === "start",
                   }}
                   style={{ left: `${startPct()}%` }}
@@ -481,7 +482,7 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
         <calendar-date class="d-cally" onChange={onBoundDateChange("min")}>
           <svg
             aria-label="Previous"
-            class="fill-current size-4"
+            class="fill-current size-5"
             slot="previous"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -490,7 +491,7 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
           </svg>
           <svg
             aria-label="Next"
-            class="fill-current size-4"
+            class="fill-current size-5"
             slot="next"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -510,7 +511,7 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
         <calendar-date class="d-cally" onChange={onBoundDateChange("max")}>
           <svg
             aria-label="Previous"
-            class="fill-current size-4"
+            class="fill-current size-5"
             slot="previous"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -519,7 +520,7 @@ export const DateRangeSlider: Component<DateRangeSliderProps> = (props) => {
           </svg>
           <svg
             aria-label="Next"
-            class="fill-current size-4"
+            class="fill-current size-5"
             slot="next"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

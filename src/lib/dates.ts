@@ -46,5 +46,5 @@ export function formatRangeLabel(date: Date, pairDate?: Date): string {
 }
 
 export function snapToDay(date: Date): Date {
-  return new Date(Math.floor(date.getTime() / 86400000) * 86400000);
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
